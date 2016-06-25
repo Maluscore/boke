@@ -30,7 +30,10 @@ def current_user():
 
 @app.route('/')
 def index():
-    return redirect(url_for('login_view'))
+    if current_user() is None:
+        return redirect(url_for('login_view'))
+    else:
+        return redirect(url_for('timeline_view', username=current_user().username))
 
 
 # 显示登录界面的函数  GET
