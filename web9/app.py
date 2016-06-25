@@ -192,7 +192,7 @@ def user_update_view(user_id):
     if user_now is None or user_now.role == not_admin:
         abort(401)
     else:
-        return render_template('user_edit.html', user=u, user_now=user_now)
+        return render_template('user_edit.html', user_now=user_now)
 
 
 # 处理 编辑用户 的请求 POST
@@ -223,8 +223,19 @@ def user_delete(user_id):
         return redirect(url_for('users_view'))
 
 
+# 显示 更新 博客的页面 GET
+@app.route('/blog/update/<blog_id>', methods=['GET'])
+def blog_update_view(blog_id):
+    user_now = current_user()
+    blog = Blog.query.filter_by(id=blog_id).first()
+    if user_now is None:
+        abort(401)
+    else:
+        return render_template('blog_update.html', user_now=user_now, blog=blog)
+
+
 # 处理 更新 博客的请求 POST
-@app.route('/blog/update/<blog_id>')
+@app.route('/blog/update/<blog_id>', methods=['POST'])
 def blog_update(blog_id):
     user_now = current_user()
     blog = Blog.query.filter_by(id=blog_id).first()
