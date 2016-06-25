@@ -223,6 +223,19 @@ def user_delete(user_id):
         return redirect(url_for('users_view'))
 
 
+# 处理 更新 博客的请求 POST
+@app.route('/blog/update/<blog_id>')
+def blog_update(blog_id):
+    user_now = current_user()
+    blog = Blog.query.filter_by(id=blog_id).first()
+    if user_now is None:
+        abort(401)
+    else:
+        blog.update(request.form)
+        blog.save()
+        return redirect(url_for('blog_view', blog_id=blog_id))
+
+
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
     args = {

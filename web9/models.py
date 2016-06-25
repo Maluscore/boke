@@ -123,6 +123,13 @@ class Blog(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def update(self, form):
+        self.title = form.get('title', '')
+        self.content = form.get('content', '')
+        self.created_time = sql.func.now()
+        self.release_time = local_time(time.time())
+        return True
+
 
 class Comment(db.Model):
     __tablename__ = 'comments'
