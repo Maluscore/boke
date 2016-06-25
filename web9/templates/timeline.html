@@ -38,6 +38,7 @@
 		<div class="span2">
 		</div>
 		<div class="span3">
+			<h3>用户信息</h3>
 			<ul>
 				<li>
 					<b>用户名：</b>{{user_now.username}}
@@ -62,10 +63,12 @@
 			{% if username!=user_now.username %}
 			<h2>{{username}}的个人主页</h2>
 			{% endif %}
+			<h3>博客列表</h3>
+			<hr>
 			<ul>
 					{% for b in blogs %}
 				<li>
-                        <a href="/blog/{{b.id}}" style="text-decoration:none"><b>{{b.title}}</b></a>
+                        <a href="/blog/{{b.id}}" style="text-decoration:none;font-size:200%"><b>{{b.title}}</b></a>
                         <abbr style="float:right">评论({{b.com_count}})</abbr>
 				</li>
                     {% endfor %}

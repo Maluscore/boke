@@ -38,6 +38,7 @@
 		<div class="span2">
 		</div>
 		<div class="span3">
+			<h3>用户信息</h3>
 			<ul>
 				<li>
 					<b>用户名：</b>{{user_now.username}}
@@ -61,11 +62,13 @@
 					{% for u in all_users %}
 				<li>
                         <a href="/timeline/{{u.username}}" style="text-decoration:none">用户名：<b>{{u.username}}</b></a>
+					    <abbr style="float:right">个性签名：{{u.note}}</abbr>
 					    {% if user_now.role == 1 %}
+					        <br>
 					        <abbr style="float:right"> <a href="/user/update/{{u.id}}" style="text-decoretion:none;float=right">编辑</a>
                             <a href="/user/delete/{{u.id}}" style="text-decoretion:none;float=right">删除</a></abbr>
 					    {% endif %}
-				</li>
+				</li><br>
                     {% endfor %}
 			</ul>
 		</div>
