@@ -20,9 +20,12 @@ not_admin = 2
 
 # 通过 session 来获取当前登录的用户
 def current_user():
-    user_id = session['user_id']
-    user = User.query.filter_by(id=user_id).first()
-    return user
+    try:
+        user_id = session['user_id']
+        user = User.query.filter_by(id=user_id).first()
+        return user
+    except KeyError:
+        return None
 
 
 @app.route('/')
@@ -50,6 +53,17 @@ def login():
     else:
         log("用户登录失败", user)
         flash('登录失败')
+        return redirect(url_for('login_view'))
+
+
+# 处理登出的请求 GET
+@app.route('/logout', methods=['GET'])
+def logout():
+    user_now = current_user()
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        session.pop('user_id')
         return redirect(url_for('login_view'))
 
 
