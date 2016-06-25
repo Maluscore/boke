@@ -247,6 +247,18 @@ def blog_update(blog_id):
         return redirect(url_for('blog_view', blog_id=blog_id))
 
 
+# 处理 删除 博客的请求 GET
+@app.route('/blog/delete/<blog_id>', methods=['GET'])
+def blog_delete(blog_id):
+    user_now = current_user()
+    blog = Blog.query.filter_by(id=blog_id).first()
+    if user_now is None:
+        abort(401)
+    else:
+        blog.delete()
+        return redirect(url_for('timeline_view', username=user_now.username))
+
+
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
     args = {
