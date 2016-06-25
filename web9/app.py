@@ -117,7 +117,6 @@ def blog_view(blog_id):
         return redirect(url_for('login_view'))
     else:
         blog = Blog.query.filter_by(id=blog_id).first()
-        # release_time = local_time(blog.created_time)
         comments = blog.comments
         comments.sort(key=lambda t: t.created_time, reverse=True)
         log('看博客')

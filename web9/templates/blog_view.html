@@ -75,8 +75,10 @@
 		</div>
 		<div class="span5">
             <hr>
+			{% if user_now.id == blog.user_id %}
 			<abbr style="float:right"> <a href="/blog/update/{{blog.id}}" style="text-decoretion:none;float=right">编辑</a>
 			<a href="/blog/delete/{{blog.id}}" style="text-decoretion:none;float=right">删除</a></abbr>
+			{% endif %}
             <form role="form" action="/comment/add/{{blog.id}}" method="post">
 				<div class="form-group">
                 <label for="comment"></label>
