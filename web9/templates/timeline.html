@@ -71,10 +71,10 @@
 			<h2>{{user.username}}的个人主页</h2>
 			{% endif %}
 			{% if user.id in fans_id_list %}
-			    <a href="">取消关注</a>
+			    <a href="/unfollow/{{user.id}}">取消关注</a>
 			{% endif %}
 			{% if user.id not in fans_id_list and user.id!=user_now.id %}
-			    <a href="">关注</a>
+			    <a href="/follow/{{user.id}}">关注</a>
 			{% endif %}
 			<h3>博客列表</h3>
 			<hr>

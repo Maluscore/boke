@@ -295,6 +295,41 @@ def fan_view(user_id):
         log('看粉丝用户')
         return render_template('fan_users.html', user_now=user_now, fan_users=fan_users)
 
+
+# 处理 关注用户 的请求 GET
+@app.route('/follow/<user_id>')
+def follow_act(user_id):
+    user_now = current_user()
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        u = User.query.filter_by(id=user_id).first()
+        f = Follow()
+        f.user_id = user_now.id
+        f.followed_id = user_id
+        f.save()
+        log('关注成功')
+        return redirect(url_for('timeline_view', username=u.username))
+
+
+# 处理 取消关注 的请求 GET
+@app.route('/unfollow/<user_id>')
+def unfollow_act(user_id):
+    user_now = current_user()
+    u = User.query.filter_by(id=user_id).first()
+    f = Follow().query.filter_by(user_id=user_now.id, followed_id=user_id).first()
+    f.delete()
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        u = User.query.filter_by(id=user_id).first()
+        f = Follow().query.filter_by(user_id=user_now.id, followed_id=user_id).first()
+        f.delete()
+        log('取消关注成功')
+        return redirect(url_for('timeline_view', username=u.username))
+
+
+
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
     args = {
