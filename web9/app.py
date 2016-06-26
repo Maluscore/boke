@@ -31,8 +31,8 @@ def current_user():
 
 # 得到 粉丝id 列表
 def get_fan(user_id):
-    fans = Follow.query.filter_by(follower_id=user_id).all
-    id_list = [x.fan_id for x in fans]
+    fans = Follow.query.filter_by(user_id=user_id).all
+    id_list = [x.followed_id for x in fans]
     return id_list
 
 
@@ -126,7 +126,11 @@ def timeline_view(username):
         blogs = u.blogs
         blogs.sort(key=lambda t: t.created_time, reverse=True)
         log('看个人主页')
-        return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u)
+        u.follow_count = len(Follow.query.filter_by(user_id=u.id).all())
+        u.fan_count = len(Follow.query.filter_by(followed_id=u.id).all())
+        u.save()
+        fans_id_list = get_fan(u.id)
+        return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u, fans_id_list=fans_id_list)
 
 
 # 显示 博客 的页面  GET
@@ -325,9 +329,6 @@ def follow_act(user_id):
 @app.route('/unfollow/<user_id>')
 def unfollow_act(user_id):
     user_now = current_user()
-    u = User.query.filter_by(id=user_id).first()
-    f = Follow().query.filter_by(user_id=user_now.id, followed_id=user_id).first()
-    f.delete()
     if user_now is None:
         return redirect(url_for('login_view'))
     else:
@@ -337,7 +338,6 @@ def unfollow_act(user_id):
         log('取消关注成功')
         fan_follow_count(user_now)
         return redirect(url_for('timeline_view', username=u.username))
-
 
 
 if __name__ == '__main__':
