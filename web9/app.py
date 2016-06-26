@@ -11,6 +11,7 @@ from my_log import log
 from models import User
 from models import Blog
 from models import Comment
+from models import Follow
 
 
 app = Flask(__name__)
@@ -110,7 +111,7 @@ def timeline_view(username):
         blogs = u.blogs
         blogs.sort(key=lambda t: t.created_time, reverse=True)
         log('看个人主页')
-        return render_template('timeline.html', blogs=blogs, user_now=user_now, username=username)
+        return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u)
 
 
 # 显示 博客 的页面  GET

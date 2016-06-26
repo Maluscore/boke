@@ -156,25 +156,25 @@ class Comment(db.Model):
         db.session.commit()
 
 
-# class Follow(db.Model):
-#     __tablename__ = 'follows'
-#     id = db.Column(db.Integer, primary_key=True)
-#     follower_id = db.Column(db.Integer)
-#     be_followed = db.Column(db.Integer)
-#     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
-#     release_time = db.Column(db.String(), default=local_time(time.time()))
-#
-#     def __repr__(self):
-#         class_name = self.__class__.__name__
-#         return u'<{}: {}>'.format(class_name, self.id)
-#
-#     def save(self):
-#         db.session.add(self)
-#         db.session.commit()
-#
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
+class Follow(db.Model):
+    __tablename__ = 'follows'
+    id = db.Column(db.Integer, primary_key=True)
+    follower_id = db.Column(db.Integer, default=0)
+    be_followed_id = db.Column(db.Integer, default=0)
+    created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
+    release_time = db.Column(db.String(), default=local_time(time.time()))
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        return u'<{}: {}>'.format(class_name, self.id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 def backup_db():

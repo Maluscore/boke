@@ -57,14 +57,26 @@
                     {% if user_now.role == 1 %}管理员{% endif %}
                     {% if user_now.role == 2 %}普通会员{% endif %}
 				</li>
+				<li>
+					{% if user.username==user_now.username %}
+					<a href="/follow/list/{{user_now.id}}"><b>关注：</b></a>{{follow_count}}
+						<a href="/fan/list/{{user_now.id}}"><b>粉丝：</b></a>{{fan_count}}
+					{% enif %}
+				</li>
 			</ul>
 		</div>
 		<div class="span5">
-			{% if username==user_now.username %}
-			<h2>欢迎来到您的个人主页，{{username}}</h2>
+			{% if user.username==user_now.username %}
+			<h2>欢迎来到您的个人主页，{{user.username}}</h2>
 			{% endif %}
-			{% if username!=user_now.username %}
-			<h2>{{username}}的个人主页</h2>
+			{% if user.username!=user_now.username %}
+			<h2>{{user.username}}的个人主页</h2>
+			{% endif %}
+			{% if user.id in fans_list %}
+			    <a href="">取消关注</a>
+			{% endif %}
+			{% if user.id not in fans_list and user.id!=user_now.id %}
+			    <a href="">关注</a>
 			{% endif %}
 			<h3>博客列表</h3>
 			<hr>
