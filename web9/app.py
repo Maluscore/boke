@@ -84,7 +84,8 @@ def register():
         flash('注册成功')
         # 保存到数据库
         u.save()
-        return redirect(url_for('login_view'))
+        session['user_id'] = u.id
+        return redirect(url_for('timeline_view', username=u.username))
     else:
         log('注册失败', request.form)
         flash('注册失败')
@@ -108,7 +109,7 @@ def timeline_view(username):
     else:
         blogs = u.blogs
         blogs.sort(key=lambda t: t.created_time, reverse=True)
-        log(blogs)
+        log('看个人主页')
         return render_template('timeline.html', blogs=blogs, user_now=user_now, username=username)
 
 
