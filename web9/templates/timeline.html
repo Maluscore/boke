@@ -58,8 +58,8 @@
                     {% if user.role == 2 %}普通会员{% endif %}
 				</li>
 				<li>
-					<a href="/follow/list/{{user_now.id}}"><b>关注人数：</b></a>{{user.follow_count}}
-					<a href="/fan/list/{{user_now.id}}"><b>粉丝人数：</b></a>{{user.fan_count}}
+					<a href="/follow/list/{{user.id}}"><b>关注人数：</b></a>{{user.follow_count}}
+					<a href="/fan/list/{{user.id}}"><b>粉丝人数：</b></a>{{user.fan_count}}
 				</li>
 			</ul>
 		</div>

@@ -29,7 +29,7 @@ def current_user():
         return None
 
 
-#得到 粉丝id 列表
+# 得到 粉丝id 列表
 def get_fan(user_id):
     fans = Follow.query.filter_by(follower_id=user_id).all
     id_list = [x.fan_id for x in fans]
@@ -188,7 +188,7 @@ def users_view():
     if user_now is None:
         return redirect(url_for('login_view'))
     else:
-        log('看用户')
+        log('看所有用户')
         return render_template('all_users.html', user_now=user_now, all_users=all_users)
 
 
@@ -269,6 +269,31 @@ def blog_delete(blog_id):
         blog.delete()
         return redirect(url_for('timeline_view', username=user_now.username))
 
+
+# 显示 关注列表 的界面 GET
+@app.route('/follow/list/<user_id>')
+def follow_view(user_id):
+    user_now = current_user()
+    all_follows = Follow.query.filter_by(user_id=user_id).all()
+    follow_users = all_follows.follows
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        log('看关注用户')
+        return render_template('follow_users.html', user_now=user_now, follow_users=follow_users)
+
+
+# 显示 粉丝列表 的界面 GET
+@app.route('/fan/list/<user_id>')
+def fan_view(user_id):
+    user_now = current_user()
+    all_fans = Follow.query.filter_by(followed_id=user_id).all()
+    fan_users = all_fans.follows
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        log('看粉丝用户')
+        return render_template('fan_users.html', user_now=user_now, fan_users=fan_users)
 
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
