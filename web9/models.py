@@ -93,7 +93,7 @@ class User(db.Model):
             return False
         else:
             self.username = a
-            self.password = b
+            self.password = convert_to_sha1(b)
             return True
 
 

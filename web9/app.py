@@ -289,8 +289,8 @@ def follow_view(user_id):
     all_follows = Follow.query.filter_by(user_id=user_id).all()
     follow_users_id = [x.followed_id for x in all_follows]
     follow_users = []
-    for id in follow_users_id:
-        follow_users.append(User.query.filter_by(id=id).first())
+    for i in follow_users_id:
+        follow_users.append(User.query.filter_by(id=i).first())
     if user_now is None:
         return redirect(url_for('login_view'))
     else:
