@@ -29,6 +29,13 @@ def current_user():
         return None
 
 
+#得到 粉丝id 列表
+def get_fan(user_id):
+    fans = Follow.query.filter_by(follower_id=user_id).all
+    id_list = [x.fan_id for x in fans]
+    return id_list
+
+
 @app.route('/')
 def index():
     if current_user() is None:

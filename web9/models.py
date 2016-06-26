@@ -39,6 +39,8 @@ class User(db.Model):
     sex = db.Column(db.String())
     note = db.Column(db.String(), nullable=True)
     role = db.Column(db.Integer, default=2)
+    follow_count = db.Column(db.Integer, default=0)
+    fan_count = db.Column(db.Integer, default=0)
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     release_time = db.Column(db.String(), default=local_time(time.time()))
     # 这是引用别的表的数据的属性，表明了它关联的东西
@@ -160,7 +162,7 @@ class Follow(db.Model):
     __tablename__ = 'follows'
     id = db.Column(db.Integer, primary_key=True)
     follower_id = db.Column(db.Integer, default=0)
-    be_followed_id = db.Column(db.Integer, default=0)
+    fan_id = db.Column(db.Integer, default=0)
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     release_time = db.Column(db.String(), default=local_time(time.time()))
 
