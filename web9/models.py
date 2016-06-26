@@ -162,13 +162,13 @@ class Follow(db.Model):
     __tablename__ = 'follows'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    followed_id = db.Column(db.Integer)
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     release_time = db.Column(db.String(), default=local_time(time.time()))
     # 关注了哪些用户，配合user_id使用
     follows = db.relationship('User')
     # 有哪些粉丝，配合followed_id使用
-    fans = db.relationship('User')
+    # fans = db.relationship('User')
 
     def __repr__(self):
         class_name = self.__class__.__name__
