@@ -31,7 +31,7 @@ def current_user():
 
 # 得到 粉丝id 列表
 def get_fan(user_id):
-    fans = Follow.query.filter_by(user_id=user_id).all
+    fans = Follow.query.filter_by(user_id=user_id).all()
     id_list = [x.followed_id for x in fans]
     return id_list
 
