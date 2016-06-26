@@ -129,7 +129,7 @@ def timeline_view(username):
         u.follow_count = len(Follow.query.filter_by(user_id=u.id).all())
         u.fan_count = len(Follow.query.filter_by(followed_id=u.id).all())
         u.save()
-        fans_id_list = get_fan(u.id)
+        fans_id_list = get_fan(user_now.id)
         return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u, fans_id_list=fans_id_list)
 
 
@@ -215,7 +215,7 @@ def user_update_view(user_id):
     if user_now is None or user_now.role == not_admin:
         abort(401)
     else:
-        return render_template('user_edit.html', user_now=user_now)
+        return render_template('user_edit.html', user_now=user_now, user=u)
 
 
 # 处理 编辑用户 的请求 POST
@@ -287,11 +287,15 @@ def blog_delete(blog_id):
 def follow_view(user_id):
     user_now = current_user()
     all_follows = Follow.query.filter_by(user_id=user_id).all()
-    follow_users = all_follows.follows
+    follow_users_id = [x.followed_id for x in all_follows]
+    follow_users = []
+    for id in follow_users_id:
+        follow_users.append(User.query.filter_by(id=id).first())
     if user_now is None:
         return redirect(url_for('login_view'))
     else:
         log('看关注用户')
+        follow_users.sort(key=lambda t: t.created_time, reverse=True)
         return render_template('follow_users.html', user_now=user_now, follow_users=follow_users)
 
 
@@ -300,11 +304,12 @@ def follow_view(user_id):
 def fan_view(user_id):
     user_now = current_user()
     all_fans = Follow.query.filter_by(followed_id=user_id).all()
-    fan_users = all_fans.follows
+    fan_users = [x.follows for x in all_fans]
     if user_now is None:
         return redirect(url_for('login_view'))
     else:
         log('看粉丝用户')
+        fan_users.sort(key=lambda t: t.created_time, reverse=True)
         return render_template('fan_users.html', user_now=user_now, fan_users=fan_users)
 
 

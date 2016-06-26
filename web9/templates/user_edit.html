@@ -43,18 +43,18 @@
 		<div class="span3">
 			<ul>
 				<li>
-					<b>用户名：</b>{{user_now.username}}
+					<b>用户名：</b>{{user.username}}
 				</li>
 				<li>
-					<b>性别：</b>{{user_now.sex}}
+					<b>性别：</b>{{user.sex}}
 				</li>
 				<li>
-					<b>个性签名：</b>{{user_now.note}}
+					<b>个性签名：</b>{{user.note}}
 				</li>
 				<li>
 					<b>当前身份：</b>
-                    {% if user_now.role == 1 %}管理员{% endif %}
-                    {% if user_now.role == 2 %}普通会员{% endif %}
+                    {% if user.role == 1 %}管理员{% endif %}
+                    {% if user.role == 2 %}普通会员{% endif %}
 				</li>
 			</ul>
 		</div>

@@ -21,7 +21,7 @@
 								<li>
 									<a href="/timeline/{{user_now.username}}">个人主页</a>
 								</li>
-								<li class="active">
+								<li>
 									<a href="/users/list">用户列表</a>
 								</li>
 								<li>
@@ -62,15 +62,9 @@
 		<div class="span5">
 			<h2>关注列表</h2>
 			<ul>
-					{% for u in all_users %}
+					{% for u in follow_users %}
 				<li>
                         <a href="/timeline/{{u.username}}" style="text-decoration:none">用户名：<b>{{u.username}}</b></a>
-					    <abbr style="float:right">个性签名：{{u.note}}</abbr>
-					    {% if user_now.role == 1 %}
-					        <br>
-					        <abbr style="float:right"> <a href="/user/update/{{u.id}}" style="text-decoretion:none;float=right">编辑</a>
-                            <a href="/user/delete/{{u.id}}" style="text-decoretion:none;float=right">删除</a></abbr>
-					    {% endif %}
 				</li><br>
                     {% endfor %}
 			</ul>

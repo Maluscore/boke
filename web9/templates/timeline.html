@@ -71,17 +71,17 @@
 			<h2>{{user.username}}的个人主页</h2>
 			{% endif %}
 			{% if user.id in fans_id_list %}
-			    <a href="/unfollow/{{user.id}}">取消关注</a>
+			    <a href="/unfollow/{{user.id}}" style="float:right">取消关注</a>
 			{% endif %}
 			{% if user.id not in fans_id_list and user.id!=user_now.id %}
-			    <a href="/follow/{{user.id}}">关注</a>
+			    <a href="/follow/{{user.id}} " style="float:right">关注</a>
 			{% endif %}
 			<h3>博客列表</h3>
 			<hr>
 			<ul>
 					{% for b in blogs %}
 				<li>
-                        <a href="/blog/{{b.id}}" style="text-decoration:none;font-size:200%"><b>{{b.title}}</b></a>
+                        <a href="/blog/{{b.id}}" style="text-decoration:none;font-size:150%"><b>{{b.title}}</b></a>
                         <abbr style="float:right">评论({{b.com_count}})</abbr>
 				</li>
                     {% endfor %}
