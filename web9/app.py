@@ -36,6 +36,14 @@ def get_fan(user_id):
     return id_list
 
 
+# 关注和粉丝计数
+def fan_follow_count(user):
+    user.follow_count = len(Follow.query.filter_by(user_id=user.id).all())
+    user.fan_count = len(Follow.query.filter_by(followed_id=user.id).all())
+    user.save()
+    return True
+
+
 @app.route('/')
 def index():
     if current_user() is None:
@@ -309,6 +317,7 @@ def follow_act(user_id):
         f.followed_id = user_id
         f.save()
         log('关注成功')
+        fan_follow_count(user_now)
         return redirect(url_for('timeline_view', username=u.username))
 
 
@@ -326,6 +335,7 @@ def unfollow_act(user_id):
         f = Follow().query.filter_by(user_id=user_now.id, followed_id=user_id).first()
         f.delete()
         log('取消关注成功')
+        fan_follow_count(user_now)
         return redirect(url_for('timeline_view', username=u.username))
 
 
