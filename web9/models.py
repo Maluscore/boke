@@ -140,6 +140,7 @@ class Comment(db.Model):
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     release_time = db.Column(db.String(), default=local_time(time.time()))
     sender_name = db.Column(db.String())
+    reply_id = db.Column(db.Integer, default=0)
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     def __init__(self, form):

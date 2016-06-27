@@ -345,6 +345,30 @@ def unfollow_act(user_id):
         return redirect(url_for('timeline_view', username=u.username))
 
 
+# 显示 回复评论 的页面 GET
+@app.route('/reply/add/<comment_id>')
+def reply_view(comment_id):
+    user_now = current_user()
+    if user_now is None:
+        return redirect(url_for('login_view'))
+    else:
+        comment = Comment.query.filter_by(id=comment_id).first()
+        all_comments = Comment.query.filter_by(reply_id=comment_id).all()
+        user = User.query.filter_by(username=comment.sender_name).first()
+        all_comments.sort(key=lambda t: t.created_time, reverse=True)
+        return render_template('reply_view.html', comment=comment, user=user, all_comments=all_comments)
+
+
+# 处理 回复评论 的页面 POST
+@app.route('reply/add/<comment_id>', methods=['POST'])
+def reply_act(comment_id):
+    user_now = current_user()
+    c = Comment(request.form)
+    c.sender_name = user_now.username
+    c.reply_id = comment_id
+    c.save()
+    return redirect(url_for('reply_view', comment_id=comment_id))
+
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
     args = {
