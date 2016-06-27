@@ -61,9 +61,9 @@
 		</div>
 		<div class="span5">
 			<h2>写点什么，{{user_now.username}}</h2>
+			<hr>
 			<form action="/blog/add" method="post">
             <fieldset style="text-align:center">
-            <legend contenteditable="true"></legend>
             <input name="title" type="text" placeholder="标题" required="required">
 				<br>
 			<textarea name="content" class="form-control" placeholder="正文" required="required" rows="5"></textarea>
