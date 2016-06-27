@@ -88,11 +88,20 @@
             </form>
             <h3 style="text-align:left">评论列表</h3>
             <ul>
-                {% for c in comments %}
+                {% for bc in blog_comments %}
                 <li>
-                    {{c.content}}
-					<a href="/reply/add/<c.id>" style="float:right">回复</a>
-                    <p style="text-align:right">评论人：{{c.sender_name}}&#8194&#8194发布时间：{{c.release_time}}</p>
+                    {{bc.content}}
+					<a href="/reply/add/{{bc.id}}" style="float:right">回复</a>
+                    <p style="text-align:right">评论人：{{bc.sender_name}}&#8194&#8194发布时间：{{bc.release_time}}</p>
+					<ul>
+						{% for rc in reply_comments %}
+						    <li>
+								{% if rc.reply_id==bc.id %}
+								    {{rc.content}}
+								    <p style="text-align:right">评论人：{{rc.sender_name}}&#8194&#8194发布时间：{{rc.release_time}}</p>
+							</li>
+						{% endfor %}
+					</ul>
                 </li>
                 {% endfor %}
             </ul>

@@ -143,8 +143,13 @@ def blog_view(blog_id):
         blog = Blog.query.filter_by(id=blog_id).first()
         comments = blog.comments
         comments.sort(key=lambda t: t.created_time, reverse=True)
+        blog_comments = comments.query.filter_by(reply_id=0).all()
+        reply_comments = []
+        for x in comments:
+            if x.reply_id != 0:
+                reply_comments.append(x)
         log('看博客')
-        return render_template('blog_view.html', user_now=user_now, comments=comments, blog=blog)
+        return render_template('blog_view.html', user_now=user_now, blog_comments=blog_comments, blog=blog, reply_comments=reply_comments)
 
 
 # 显示 写博客 的页面 GET
@@ -356,6 +361,7 @@ def reply_view(comment_id):
         all_comments = Comment.query.filter_by(reply_id=comment_id).all()
         user = User.query.filter_by(username=comment.sender_name).first()
         all_comments.sort(key=lambda t: t.created_time, reverse=True)
+        log('查看评论回复')
         return render_template('reply_view.html', comment=comment, user=user, all_comments=all_comments)
 
 
@@ -366,7 +372,10 @@ def reply_act(comment_id):
     c = Comment(request.form)
     c.sender_name = user_now.username
     c.reply_id = comment_id
+    comment = Comment.query.filter_by(id=comment_id).first()
+    c.blog_id = comment.blog.id
     c.save()
+    log('回复评论成功')
     return redirect(url_for('reply_view', comment_id=comment_id))
 
 if __name__ == '__main__':
