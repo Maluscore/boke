@@ -28,7 +28,7 @@
 									<a href="/blog/add">发表</a>
 								</li>
 								<li>
-									<a href="/logout">登出</a>
+									<a href="/logout">注销</a>
 								</li>
 							</ul>
 						</div>
@@ -57,6 +57,10 @@
                     {% if user_now.role == 1 %}管理员{% endif %}
                     {% if user_now.role == 2 %}普通会员{% endif %}
 				</li>
+				<li>
+					<a href="/follow/list/{{user_now.id}}"><b>关注人数：</b></a>{{user_now.follow_count}}
+					<a href="/fan/list/{{user_now.id}}"><b>粉丝人数：</b></a>{{user_now.fan_count}}
+				</li>
 			</ul>
 		</div>
 		<div class="span5">
@@ -66,12 +70,13 @@
 				<li>
                         <a href="/timeline/{{u.username}}" style="text-decoration:none">用户名：<b>{{u.username}}</b></a>
 					    <abbr style="float:right">个性签名：{{u.note}}</abbr>
+					<hr>
 					    {% if user_now.role == 1 %}
-					        <br>
 					        <abbr style="float:right"> <a href="/user/update/{{u.id}}" style="text-decoretion:none;float=right">编辑</a>
                             <a href="/user/delete/{{u.id}}" style="text-decoretion:none;float=right">删除</a></abbr>
 					    {% endif %}
-				</li><br>
+					<hr>
+				</li>
                     {% endfor %}
 			</ul>
 		</div>

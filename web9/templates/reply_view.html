@@ -28,7 +28,7 @@
 									<a href="/blog/add">发表</a>
 								</li>
 								<li>
-									<a href="/logout">登出</a>
+									<a href="/logout">注销</a>
 								</li>
 							</ul>
 						</div>
@@ -64,7 +64,9 @@
 			</ul>
 		</div>
 		<div class="span5">
-            <h2>博客标题：{{comment.blog.title}}</h2><hr>
+            <h2 style="text-align:center">博客标题：{{comment.blog.title}}</h2>
+			<a href="/blog/{{comment.blog.id}}" style="text-decoration:none">返回博客页面</a>
+			<hr>
             <h4>{{comment.content}}</h4>
             <p style="text-align:right">评论人：{{comment.sender_name}}&#8194&#8194发布时间：{{comment.release_time}}</p>
             <form role="form" action="/reply/add/{{comment.id}}" method="post">

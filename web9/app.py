@@ -13,7 +13,6 @@ from models import Blog
 from models import Comment
 from models import Follow
 
-
 app = Flask(__name__)
 app.secret_key = 'peng'
 not_admin = 2
@@ -97,7 +96,6 @@ def register():
     u = User(request.form)
     if u.valid():
         log("用户注册成功")
-        flash('注册成功')
         # 保存到数据库
         u.save()
         session['user_id'] = u.id
@@ -130,7 +128,8 @@ def timeline_view(username):
         u.fan_count = len(Follow.query.filter_by(followed_id=u.id).all())
         u.save()
         fans_id_list = get_fan(user_now.id)
-        return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u, fans_id_list=fans_id_list)
+        return render_template('timeline.html', blogs=blogs, user_now=user_now, user=u,
+                               fans_id_list=fans_id_list)
 
 
 # 显示 博客 的页面  GET
@@ -143,13 +142,16 @@ def blog_view(blog_id):
         blog = Blog.query.filter_by(id=blog_id).first()
         comments = blog.comments
         comments.sort(key=lambda t: t.created_time, reverse=True)
-        blog_comments = comments.query.filter_by(reply_id=0).all()
+        blog_comments = []
         reply_comments = []
         for x in comments:
             if x.reply_id != 0:
                 reply_comments.append(x)
+            else:
+                blog_comments.append(x)
         log('看博客')
-        return render_template('blog_view.html', user_now=user_now, blog_comments=blog_comments, blog=blog, reply_comments=reply_comments)
+        return render_template('blog_view.html', user_now=user_now, blog_comments=blog_comments, blog=blog,
+                               reply_comments=reply_comments)
 
 
 # 显示 写博客 的页面 GET
@@ -362,11 +364,12 @@ def reply_view(comment_id):
         user = User.query.filter_by(username=comment.sender_name).first()
         all_comments.sort(key=lambda t: t.created_time, reverse=True)
         log('查看评论回复')
-        return render_template('reply_view.html', comment=comment, user=user, all_comments=all_comments)
+        return render_template('reply_view.html', comment=comment, user=user, all_comments=all_comments,
+                               user_now=user_now)
 
 
 # 处理 回复评论 的页面 POST
-@app.route('reply/add/<comment_id>', methods=['POST'])
+@app.route('/reply/add/<comment_id>', methods=['POST'])
 def reply_act(comment_id):
     user_now = current_user()
     c = Comment(request.form)
@@ -375,8 +378,12 @@ def reply_act(comment_id):
     comment = Comment.query.filter_by(id=comment_id).first()
     c.blog_id = comment.blog.id
     c.save()
+    blog = c.blog
+    blog.com_count = len(Comment.query.filter_by(blog_id=blog.id).all())
+    blog.save()
     log('回复评论成功')
     return redirect(url_for('reply_view', comment_id=comment_id))
+
 
 if __name__ == '__main__':
     host, port = '0.0.0.0', 5000
